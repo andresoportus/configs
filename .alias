@@ -47,3 +47,6 @@ alias s='grep -rIn --color=always'
 alias less='less -R'
 alias f='find . -type f -name '
 alias r='find . -type f -regex ".*\.\(cc\|cpp\|hpp\|h\|c\)" | xargs sed -i "s/${1}/${2}/g"'
+alias m='tmux -f ~/src/configs/.tmux.conf attach -d'
+alias mm='tmx2 -f ~/src/configs/.tmux.conf attach -d'
+
