@@ -30,19 +30,40 @@
 (defun add-low-buffer ()
   (interactive)
   (split-window-vertically -20))
-
+(defun revert-all-no-confirm ()
+  "Revert all file buffers, without confirmation.
+Buffers visiting files that no longer exist are ignored.
+Files that are not readable (including do not exist) are ignored.
+Other errors while reverting a buffer are reported only as messages."
+  (interactive)
+  (let (file)
+    (dolist (buf  (buffer-list))
+      (setq file  (buffer-file-name buf))
+      (when (and file  (file-readable-p file))
+        (with-current-buffer buf
+          (with-demoted-errors "Error: %S" (revert-buffer t t)))))))
 
 ;; Defaults
 
+(show-paren-mode 1)
 (setq-default c-default-style "linux"
               c-basic-offset 4
               indent-tabs-mode nil)
-(setq show-trailing-whitespace t)
-(setq column-number-mode t)
-(setq compilation-scroll-output t)
-(setq confirm-kill-emacs 'y-or-n-p)
-(setq compilation-last-buffer t)
+(setq-default show-trailing-whitespace t)
+(setq-default column-number-mode t)
+(setq-default compilation-scroll-output t)
+(setq-default confirm-kill-emacs 'y-or-n-p)
+(setq-default compilation-last-buffer t)
 (when (fboundp 'winner-mode) (winner-mode 1))
+;; Put backups in temp folder
+(setq-default backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+(setq-default auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t)))
+(defun my-c-setup ()
+  (c-set-offset 'innamespace [4]))
+(add-hook 'c++-mode-hook 'my-c-setup)
+
 
 ;; Keys
 
@@ -61,10 +82,16 @@
 (global-set-key "\M-o"     'other-window)
 (global-set-key "\M-u"     'scroll-down-small)
 (global-set-key "\M-d"     'scroll-up-small)
+(global-set-key (kbd "C-<left>")  'shrink-window-horizontally)
+(global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-<down>")    'shrink-window)
+(global-set-key (kbd "C-<up>")  'enlarge-window)
 
 ;; Search
 (global-set-key "\M-s\M-s" 'tags-search)
 (global-set-key "\C-cf"    'search-tags-under-cursor-forward)
+(global-set-key "\M-*"     'xref-pop-marker-stack)
+(global-set-key "\M-,"     'tags-loop-continue)
 (global-set-key "\C-t"     'rgrep)
 
 ;; Errors

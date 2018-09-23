@@ -29,12 +29,15 @@ alias gt='git log --tags --show-notes --simplify-by-decoration --pretty="format:
 alias gx='gitx --all'
 alias gm='git commit --amend --no-edit'
 alias g1='git log -p -1'
+alias g2='git log -p -2'
+alias g3='git log -p -3'
+alias g4='git log -p -4'
 
 # Others
 alias ..='cd ..'
 alias ...='cd ../..'
 alias c='clear'
-alias e='emacs -nw --load ~/src/configs/.emacs'
+alias e='emacs -nw -q --load ~/src/configs/.emacs'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias l='ls -lrt'
